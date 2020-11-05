@@ -18,5 +18,5 @@ while True:
     num += (score * credit)
     den += credit
 mean = num/den
-print('Your mean is ', mean)
+print 'Your mean is ', mean
 
