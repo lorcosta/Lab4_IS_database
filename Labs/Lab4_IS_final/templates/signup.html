@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="starter-template">
+        <h1>Save your data to the database</h1>
+        <p class="lead">Fill this form and click the button below to save your data to the database</p>
+    </div>
+  <div class="col-lg-8 mb-4">
+        <form method="post">
+          <div class="control-group form-group">
+            <div class="controls">
+              {{ signUp.name.label }}
+              {{ signUp.name(class='form-control') }}
+                {% for error in signUp.name.errors %}
+                    <div class="alert alert-danger"> {{ error }} </div>
+                {% endfor  %}
+                <p class="help-block"></p>
+            </div>
+          </div>
+          <div class="control-group form-group">
+            <div class="controls">
+              {{ signUp.username.label }}
+              {{ signUp.username(class='form-control') }}
+                {% for error in signUp.username.errors %}
+                    <div class="alert alert-danger"> {{ error }} </div>
+                {% endfor  %}
+            </div>
+          </div>
+        <div class="control-group form-group">
+            <div class="controls">
+              {{ signUp.email.label }}
+              {{ signUp.email(class='form-control') }}
+                {% for error in signUp.email.errors %}
+                    <div class="alert alert-danger"> {{ error }} </div>
+                {% endfor  %}
+            </div>
+          </div>
+          <div class="control-group form-group">
+            <div class="controls">
+              {{ signUp.password.label }}
+              {{ signUp.password(class='form-control') }}
+                {% for error in signUp.password.errors %}
+                    <div class="alert alert-danger"> {{ error }} </div>
+                {% endfor  %}
+            </div>
+          </div>
+          <!-- For success/fail messages -->
+            {{ signUp.submit(class='btn btn-primary') }}
+            {{ signUp.hidden_tag() }}
+        </form>
+      </div>
+   </div>
+{% endblock content %}

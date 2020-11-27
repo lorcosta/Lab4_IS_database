@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data" action="">
+        {{ form_upload.hidden_tag() }}
+        {{ form_upload.file.label }}
+        {{ form_upload.file }}
+        {{ form_upload.upload }}
+    </form>
+    {% for file in filelist %}
+        <img class="upload-img" src='{{ url_for("static",filename=file) }}'>
+    {% endfor %}
+{% endblock content %}
