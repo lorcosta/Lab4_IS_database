@@ -5,7 +5,7 @@ from form import SignUp, SignIn, UploadForm
 from flask import render_template, redirect, session
 from flask_mail import Message
 from Models import User, Role
-from run import db, bcrypt, mail, photos
+from run import db, bcrypt, mail#, photos
 
 
 def apply_routing(app):
@@ -96,10 +96,10 @@ def apply_routing(app):
         file_url = [str(session.get('id')) + "/" + file for file in file_url]
         form_upload = UploadForm()
         print session.get('email')
-        if form_upload.validate_on_submit():
+        '''if form_upload.validate_on_submit():
             filename = photos.save(form_upload.file.data, name=str(session.get('id')) + '.jpg',
                                    folder=str(session.get('id')))
-            file_url.append(filename)
+            file_url.append(filename)'''
         return render_template("upload.html", form_upload=form_upload, filelist=file_url)
 
     return app

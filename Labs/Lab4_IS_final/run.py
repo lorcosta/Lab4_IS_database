@@ -1,11 +1,10 @@
-from flask import Flask, session, render_template
+
+from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 import os
-
-from app import UploadForm
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
@@ -19,9 +18,9 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_TLS'] = True
 app.config['MAIL_USERNAME'] = os.environ['EMAIL_USERNAME']
 app.config['MAIL_PASSWORD'] = os.environ['EMAIL_PASSWORD']
-app.config['UPLOADED_PHOTO_DEST'] = os.getcwd()
-print os.getcwd()
 mail = Mail(app)
+app.config['UPLOADED_PHOTOS_DEST'] = os.getcwd()
+
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
 patch_request_class(app)
