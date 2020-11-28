@@ -1,13 +1,33 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <form method="post" enctype="multipart/form-data" action="">
-        {{ form_upload.hidden_tag() }}
-        {{ form_upload.file.label }}
-        {{ form_upload.file }}
-        {{ form_upload.upload }}
-    </form>
-    {% for file in filelist %}
-        <img class="upload-img" src='{{ url_for("static",filename=file) }}'>
-    {% endfor %}
+    <h2>Hello! This is your page for uploads</h2>
+    <p>You are {{ user_info.name }}</p>
+    <p>Your username is {{ user_info.username }}</p>
+    <p>Your e-mail is {{ user_info.email }}</p>
+    <p>Your role is {{ user_info.role }}</p>
+    <div class="row">
+        <div class="control-group form-group">
+            <div class="controls">
+                <form method="post" enctype="multipart/form-data" action="">
+                    {{ form_upload.hidden_tag() }}
+                    {{ form_upload.file.label }}
+                    {{ form_upload.file }}
+                    {{ form_upload.upload }}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="card-columns">
+        {% for file in filelist %}
+        <div class="card">
+            <img class="upload-img" src='{{ url_for("static",filename=file) }}' alt="Card image cap">
+            <!-- img class="card-img-top"-->
+            <div class="card-body">
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
 {% endblock content %}

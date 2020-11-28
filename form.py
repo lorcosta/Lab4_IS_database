@@ -25,7 +25,8 @@ class SignUp(FlaskForm):
 
 class SignIn(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(), Length(min=3, max=25)])
-    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    email = StringField('Email address', validators=[DataRequired(), Email()])
+    submit = SubmitField('Login')
 
 
 class UploadForm(FlaskForm):

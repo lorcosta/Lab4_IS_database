@@ -1,14 +1,34 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <form class="form-signin">
+    <form class="form-signin" method="post">
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-      <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-      <div class="checkbox mb-3">
+      <div class="control-group form-group">
+            <div class="controls">
+                {{ sign_in.email.label  }}
+                 {{ sign_in.email(class='form-control') }}
+              {% for error in sign_in.email.errors %}
+                <div class="alert alert-danger" role="alert">
+                  {{ error }}
+                </div>
+                {% endfor  %}
+            </div>
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <div class="control-group form-group">
+            <div class="controls">
+              {{ sign_in.password.label  }}
+                {{ sign_in.password(class='form-control') }}
+                 {% for error in sign_in.password.errors %}
+                <p class="alert alert-danger" role="alert">
+                  {{ error }}
+              </p>
+                {% endfor  %}
+            </div>
+        </div>
+            <!-- For success/fail messages -->
+            {{ sign_in.hidden_tag() }}
+        <div class="checkbox mb-3">
+          {{ sign_in.submit(class='btn btn-primary') }}
+        </div>
     </form>
 {% endblock content %}

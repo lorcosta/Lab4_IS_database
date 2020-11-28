@@ -42,26 +42,20 @@ def apply_routing(app):
     @app.route('/sign_in', methods=['POST', 'GET'])
     def signin():
         sign_in = SignIn()
-        # TODO seems the form is never valid
-        print 'not validating'
         if sign_in.validate_on_submit():
-            print 'validating'
-            print sign_in.password.data
-            print sign_in.email.data
             user_info = User.query.filter_by(email=sign_in.email.data).first()
-            print user_info
             if user_info and bcrypt.check_password_hash(user_info.password, sign_in.password.data):
                 print sign_in.password.data
                 print sign_in.email.data
                 session['name'] = user_info.name
-                session['username'] = user_info.email
+                session['username'] = user_info.username
                 session['email'] = user_info.email
                 session['logged'] = True
                 return redirect('user')
             else:
                 # TODO error in logging in
                 return True
-        return render_template('sign_in.html', title='Sign In')
+        return render_template('sign_in.html', sign_in=sign_in, title='Sign In')
 
     @app.route('/home')
     def home():
@@ -91,16 +85,27 @@ def apply_routing(app):
 
     @app.route('/upload', methods=["POST", "GET"])
     def upload():
-        if not os.path.exists('static/' + str(session.get('id'))):
-            os.makedirs('static/' + str(session.get('id')))
-        file_url = os.listdir('static/' + str(session.get('id')))
-        file_url = [str(session.get('id')) + "/" + file for file in file_url]
-        form_upload = UploadForm()
-        print session.get('email')
-        if form_upload.validate_on_submit():
-            filename = photos.save(form_upload.file.data, name=str(session.get('id')) + '.jpg',
-                                   folder=str(session.get('id')))
-            file_url.append(filename)
-        return render_template("upload.html", form_upload=form_upload, filelist=file_url)
+        if session.get('username'):
+            user_info = User.query.filter(User.username == session.get('username')).first()
+            print 'stopping before if'
+            if not os.path.exists('static/' + str(session.get('username'))):
+                print 'stopping before creation of directory'
+                os.makedirs('static/' + str(session.get('username')))
+                print 'create directory'
+            file_url = os.listdir('static/' + str(session.get('username')))
+            file_url = [str(session.get('username')) + "/" + file for file in file_url]
+            form_upload = UploadForm()
+            print session.get('email')
+            if form_upload.validate_on_submit():
+                filename = photos.save(form_upload.file.data, name=str(session.get('username')) + '.jpg',
+                                       folder=str(session.get('username')))
+                file_url.append(filename)
+            return render_template("upload.html", title='Uploads', form_upload=form_upload, filelist=file_url, user_info=user_info)
+        else:
+            return redirect('home')
 
+    @app.route('/logout')
+    def logout():
+        session.clear()
+        return redirect('home')
     return app
