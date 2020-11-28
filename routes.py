@@ -4,7 +4,6 @@ from email_validator import validate_email
 from form import SignUp, SignIn, UploadForm
 from flask import render_template, redirect, session
 from flask_mail import Message
-from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 from Models import User, Role
 from run import db, bcrypt, mail, photos
 
@@ -87,20 +86,20 @@ def apply_routing(app):
     def upload():
         if session.get('username'):
             user_info = User.query.filter(User.username == session.get('username')).first()
-            print 'stopping before if'
             if not os.path.exists('static/' + str(session.get('username'))):
-                print 'stopping before creation of directory'
+                print 'making the dir ' + str(os.getcwd() + session.get('username'))
                 os.makedirs('static/' + str(session.get('username')))
-                print 'create directory'
             file_url = os.listdir('static/' + str(session.get('username')))
+            print file_url
             file_url = [str(session.get('username')) + "/" + file for file in file_url]
+            print file_url
             form_upload = UploadForm()
             print session.get('email')
             if form_upload.validate_on_submit():
                 filename = photos.save(form_upload.file.data, name=str(session.get('username')) + '.jpg',
                                        folder=str(session.get('username')))
                 file_url.append(filename)
-            return render_template("upload.html", title='Uploads', form_upload=form_upload, filelist=file_url, user_info=user_info)
+            return render_template("upload.html", title='Uploads', form_upload=form_upload, user_info=user_info, filelist=file_url)
         else:
             return redirect('home')
 
@@ -108,4 +107,13 @@ def apply_routing(app):
     def logout():
         session.clear()
         return redirect('home')
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html'), 404
+
+    @app.errorhandler(500)
+    def server_error(e):
+        return render_template('500.html'), 500
+
     return app
