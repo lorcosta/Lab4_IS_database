@@ -17,7 +17,7 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_TLS'] = True
 app.config['MAIL_USERNAME'] = os.environ['EMAIL_USERNAME']
 app.config['MAIL_PASSWORD'] = os.environ['EMAIL_PASSWORD']
-app.config['UPLOADED_PHOTOS_DEST'] = os.getcwd()+'static'
+app.config['UPLOADED_PHOTOS_DEST'] = os.getcwd()+"/static"
 print os.getcwd()
 mail = Mail(app)
 photos = UploadSet('photos', IMAGES)

@@ -86,18 +86,17 @@ def apply_routing(app):
     def upload():
         if session.get('username'):
             user_info = User.query.filter(User.username == session.get('username')).first()
-            if not os.path.exists('static/' + str(session.get('username'))):
-                print 'making the dir ' + str(os.getcwd() + session.get('username'))
-                os.makedirs('static/' + str(session.get('username')))
-            file_url = os.listdir('static/' + str(session.get('username')))
+            os.chdir('/Users/lorenzocosta/Documents/Information System/Labs/Lab4_IS_database/static')
+            if not os.path.exists(str(session.get('username'))):
+                os.makedirs(str(session.get('username')))
+            file_url = os.listdir('/Users/lorenzocosta/Documents/Information System/Labs/Lab4_IS_database/static/'+str(session.get('username')))
             print file_url
             file_url = [str(session.get('username')) + "/" + file for file in file_url]
             print file_url
             form_upload = UploadForm()
-            print session.get('email')
             if form_upload.validate_on_submit():
                 filename = photos.save(form_upload.file.data, name=str(session.get('username')) + '.jpg',
-                                       folder=str(session.get('username')))
+                                       folder='/Users/lorenzocosta/Documents/Information System/Labs/Lab4_IS_database/static/'+str(session.get('username')))
                 file_url.append(filename)
             return render_template("upload.html", title='Uploads', form_upload=form_upload, user_info=user_info, filelist=file_url)
         else:
