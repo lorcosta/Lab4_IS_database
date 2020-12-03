@@ -30,5 +30,5 @@ class SignIn(FlaskForm):
 
 
 class UploadForm(FlaskForm):
-    file = FileField('File', validators=[DataRequired()])
+    file = FileField('Upload a File', validators=[DataRequired()])
     upload = SubmitField('Upload')
